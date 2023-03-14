@@ -19,18 +19,19 @@ vim.keymap.set("x", "<leader>p", [["_dP]])
 -- copy into sys register nad paste from
 vim.keymap.set("v", "<leader>y", [["_y]])
 vim.keymap.set({ "n", "v" }, "<leader>Y", [["_Y]])
-vim.keymap.set("i", "<C-v>", [["+p"]])
+vim.keymap.set("i", "<C-v>", [[<Esc>"+pi]])
+vim.keymap.set("n", "<C-v>", [["+p]])
 
 -- actually delete text
-vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
+vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
 -- exit terminal w <Esc>
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]])
 
 -- quick format
 wfmt = function()
-	vim.cmd.wa()
-	vim.lsp.buf.format()
+    vim.cmd.wa()
+    vim.lsp.buf.format()
 end
 vim.keymap.set("n", "<leader>f", wfmt)
 
@@ -45,18 +46,24 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 
 -- write to file and run file
 execs = {
-	["py"] = "python",
-	["lua"] = "lua",
-	["default"] = ""
+    ["py"] = "python",
+    ["lua"] = "lua",
+    ["default"] = ""
 }
 runf = function()
-	wfmt()
-	ext = vim.fn.expand("%:p")
-	if execs[ext] then
-		vim.cmd(string.format("![%s] %", execs[ext]))
-	end
+    wfmt()
+    ext = vim.fn.expand("%:p")
+    if execs[ext] then
+        vim.cmd(string.format("![%s] %", execs[ext]))
+    end
 end
 vim.keymap.set({ "n", "i", "v" }, "<F5>", runf)
 
+-- adjust cursor movement on <Esc>
+vim.keymap.set("i", "<Esc>", "<Esc>l", { remap = false })
+
 -- set cwd to that of the current file
 vim.keymap.set("n", "cwd", "<cmd>silent cd %:p:h<CR>")
+
+-- open nvim configs
+vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/AppData/Local/nvim/<CR>")
