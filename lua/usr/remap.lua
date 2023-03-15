@@ -29,11 +29,11 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]])
 
 -- quick format
-wfmt = function()
+local wfmt = function()
     vim.cmd.wa()
     vim.lsp.buf.format()
 end
-vim.keymap.set("n", "<leader>f", wfmt)
+vim.keymap.set("n", "<leader><leader>", wfmt)
 
 -- quickfix binds
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
@@ -45,18 +45,21 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- write to file and run file
-execs = {
+local execs = {
     ["py"] = "python",
     ["lua"] = "lua",
     ["default"] = ""
 }
-runf = function()
+local runf = function()
     wfmt()
-    ext = vim.fn.expand("%:p")
+    local ext = vim.fn.expand("%:e")
+    print(ext)
+    print(string.format("!%s ", execs[ext]) .. vim.fn.expand("%"))
     if execs[ext] then
-        vim.cmd(string.format("![%s] %", execs[ext]))
+        vim.cmd(string.format("!%s ", execs[ext]) .. vim.fn.expand("%"))
     end
 end
+
 vim.keymap.set({ "n", "i", "v" }, "<F5>", runf)
 
 -- adjust cursor movement on <Esc>

@@ -14,6 +14,7 @@ return require('packer').startup(function(use)
         "folke/trouble.nvim",
         config = function()
             require("trouble").setup {
+                icons = false,
                 use_diagnostic_signs = true,
                 auto_fold = true,
             }
