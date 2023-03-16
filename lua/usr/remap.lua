@@ -45,27 +45,9 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- write to file and run file
-local os_sep = package.config:sub(1, 1)
-if os_sep == "/" then
-    OS_NAME = "unix"
-elseif os_sep == "\\" or os_sep == "\\\\" then
-    OS_NAME = "win"
-end
-
-local execs = {
-    ["py"] = "python",
-    ["lua"] = "lua",
-    ["default"] = ""
-}
-if OS_NAME == "unix" then
-    execs["py"] = execs["py"] .. "3"
-end
-
 local runf = function()
     wfmt()
     local ext = vim.fn.expand("%:e")
-    print(ext)
-    print(string.format("!%s ", execs[ext]) .. vim.fn.expand("%"))
     if execs[ext] then
         vim.cmd(string.format("!%s ", execs[ext]) .. vim.fn.expand("%"))
     end
@@ -80,5 +62,11 @@ vim.keymap.set("i", "<Esc>", "<Esc>l", { remap = false })
 vim.keymap.set("n", "cwd", "<cmd>silent cd %:p:h<CR>")
 
 -- open nvim configs
-local config = vim.fn.expand("%:h:h:h")
+OS_NAME = vim.fn.has("macunix")
+if OS_NAME == "win" then
+    config = [[~\AppData\Local\nvim\]]
+elseif OS_NAME == "unix" then
+    config = "~/.config/nvim/"
+end
 vim.keymap.set("n", "<leader>vpp", "<cmd>e " .. config .. "<CR>")
+
