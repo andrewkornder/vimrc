@@ -45,12 +45,10 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- write to file and run file
+require("usr.run")
 local runf = function()
     wfmt()
-    local ext = vim.fn.expand("%:e")
-    if execs[ext] then
-        vim.cmd(string.format("!%s ", execs[ext]) .. vim.fn.expand("%"))
-    end
+    vim.cmd(get_run_command())
 end
 
 vim.keymap.set({ "n", "i", "v" }, "<F5>", runf)
@@ -62,11 +60,11 @@ vim.keymap.set("i", "<Esc>", "<Esc>l", { remap = false })
 vim.keymap.set("n", "cwd", "<cmd>silent cd %:p:h<CR>")
 
 -- open nvim configs
-OS_NAME = vim.fn.has("macunix")
-if OS_NAME == "win" then
-    config = [[~\AppData\Local\nvim\]]
-elseif OS_NAME == "unix" then
+local config
+if IS_UNIX == 1 then
     config = "~/.config/nvim/"
+else
+    config = "~\\AppData\\Local\\nvim\\"
 end
 vim.keymap.set("n", "<leader>vpp", "<cmd>e " .. config .. "<CR>")
 
