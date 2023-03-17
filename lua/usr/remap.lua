@@ -60,11 +60,14 @@ vim.keymap.set("i", "<Esc>", "<Esc>l", { remap = false })
 vim.keymap.set("n", "cwd", "<cmd>silent cd %:p:h<CR>")
 
 -- open nvim configs
-local config
+local config, code
 if IS_UNIX == 1 then
     config = "~/.config/nvim/"
+    code = "~/Documents/GitHub/code"
 else
     config = "~\\AppData\\Local\\nvim\\"
+    code = "~\\Desktop\\code"
 end
-vim.keymap.set("n", "<leader>vpp", "<cmd>e " .. config .. "<CR>")
 
+vim.keymap.set("n", "<leader>vpp", "<cmd>e " .. config .. "<CR>")
+vim.keymap.set("n", "<leader>vpc", "<cmd>e " .. code .. "<CR>") 
