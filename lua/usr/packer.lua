@@ -6,8 +6,8 @@ return require("packer").startup(function(use)
     -- colors
     use "sainnhe/gruvbox-material"
     use { "rose-pine/neovim", as = "rose-pine" }
+    use { "dracula/vim", as = "dracula" }
     use "folke/tokyonight.nvim"
-    use "dracula/vim"
     use "drewtempelmeyer/palenight.vim"
 
     use "zefei/vim-colortuner"

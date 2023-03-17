@@ -1,4 +1,4 @@
-IS_UNIX = vim.fn.has("maxunix")
+IS_UNIX = vim.fn.has("macunix")
 LANGS = {
     ["python"] = {ext="py", cmd="!python %"},
     ["lua"] = {ext="lua", cmd="!lua %"},

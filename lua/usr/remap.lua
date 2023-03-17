@@ -61,12 +61,12 @@ vim.keymap.set("n", "cwd", "<cmd>silent cd %:p:h<CR>")
 
 -- open nvim configs
 local config, code
-if IS_UNIX == 1 then
+if IS_UNIX then
     config = "~/.config/nvim/"
-    code = "~/Documents/GitHub/code"
+    code = "~/Documents/GitHub/"
 else
-    config = "~\\AppData\\Local\\nvim\\"
-    code = "~\\Desktop\\code"
+    config = "~/AppData/Local/nvim/"
+    code = "~/Desktop/code"
 end
 
 vim.keymap.set("n", "<leader>vpp", "<cmd>e " .. config .. "<CR>")

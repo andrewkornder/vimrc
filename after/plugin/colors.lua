@@ -1,4 +1,4 @@
-vim.o.termguicolors = true
+vim.o.termguicolors = not vim.fn.has("macunix")
 vim.opt.background = "dark"
 
 local overrideColors = {
@@ -28,8 +28,6 @@ local color_priority = {
 local n = #color_priority
 
 function CycleColors(inc)
-    local adj = (inc < 0) and 1 or 0
-
     local current = vim.g.colors_name
     if current == nil then
         current = "default"
