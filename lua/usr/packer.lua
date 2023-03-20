@@ -60,4 +60,7 @@ return require("packer").startup(function(use)
 
     -- editing parens, quotes and other groups
     use "tpope/vim-surround"
+
+    -- easier access to console output
+    use "AndrewRadev/bufferize.vim"
 end)

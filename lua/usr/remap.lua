@@ -1,3 +1,5 @@
+require("usr.run")
+
 vim.g.mapleader = " "
 
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
@@ -45,23 +47,27 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- write to file and run file
-require("usr.run")
-local runf = function()
+local runf = function(mode)
     wfmt()
-    vim.cmd(get_run_command())
+    vim.cmd(get_run_command(mode))
 end
 
-vim.keymap.set({ "n", "i", "v" }, "<F5>", runf)
+vim.keymap.set({ "n", "i", "v" }, "<F5>", function()
+    runf(0)
+end)
+vim.keymap.set({ "n", "i", "v" }, "<F6>", function()
+    runf(1)
+end)
 
 -- adjust cursor movement on <Esc>
 vim.keymap.set("i", "<Esc>", "<Esc>l", { remap = false })
 
 -- set cwd to that of the current file
-vim.keymap.set("n", "cwd", "<cmd>silent cd %:p:h<CR>")
+vim.keymap.set("n", "<leader>cd", "<cmd>cd %:p:h<CR>")
 
 -- open nvim configs
 local config, code
-if IS_UNIX then
+if vim.fn.has("macunix") == 1 then
     config = "~/.config/nvim/"
     code = "~/Documents/GitHub/"
 else
