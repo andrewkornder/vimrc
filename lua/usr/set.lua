@@ -21,3 +21,5 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = "80"
 
 --vim.opt.autochdir = true
+
+vim.g.textwidth = 60

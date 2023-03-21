@@ -32,8 +32,8 @@ vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]])
 
 -- quick format
 local wfmt = function()
-    vim.cmd.wa()
-    vim.lsp.buf.format()
+	vim.cmd.wa()
+	vim.lsp.buf.format()
 end
 vim.keymap.set("n", "<leader><leader>", wfmt)
 
@@ -48,15 +48,15 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 
 -- write to file and run file
 local runf = function(mode)
-    wfmt()
-    vim.cmd(get_run_command(mode))
+	wfmt()
+	vim.cmd(get_run_command(mode))
 end
 
 vim.keymap.set({ "n", "i", "v" }, "<F5>", function()
-    runf(0)
+	runf(0)
 end)
 vim.keymap.set({ "n", "i", "v" }, "<F6>", function()
-    runf(1)
+	runf(1)
 end)
 
 -- adjust cursor movement on <Esc>
@@ -68,12 +68,12 @@ vim.keymap.set("n", "<leader>cd", "<cmd>cd %:p:h<CR>")
 -- open nvim configs
 local config, code
 if vim.fn.has("macunix") == 1 then
-    config = "~/.config/nvim/"
-    code = "~/Documents/GitHub/"
+	config = "~/.config/nvim/"
+	code = "~/Documents/GitHub/"
 else
-    config = "~/AppData/Local/nvim/"
-    code = "~/Desktop/code"
+	config = "~/AppData/Local/nvim/"
+	code = "~/Desktop/code"
 end
 
 vim.keymap.set("n", "<leader>vpp", "<cmd>e " .. config .. "<CR>")
-vim.keymap.set("n", "<leader>vpc", "<cmd>e " .. code .. "<CR>") 
+vim.keymap.set("n", "<leader>vpc", "<cmd>e " .. code .. "<CR>")
