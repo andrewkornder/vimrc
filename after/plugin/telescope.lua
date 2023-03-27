@@ -4,8 +4,8 @@ require("usr.run")
 local search_cmd = { "git", "ls-files", "--cached" }
 if true then
     local pattern = {}
-    for _, info in pairs(LANGS) do
-        table.insert(pattern, [["*.]] .. info.ext .. [["]])
+    for name, _ in pairs(LANGS) do
+        table.insert(pattern, [["*.]] .. name .. [["]])
     end
     table.insert(search_cmd, 3, table.concat(pattern, " "))
 end

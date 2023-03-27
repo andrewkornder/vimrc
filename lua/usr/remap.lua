@@ -2,78 +2,101 @@ require("usr.run")
 
 vim.g.mapleader = " "
 
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+
+local function bind(modes, keymap, command, args)
+    args = {} or args
+    vim.keymap.set(modes, keymap, command, args)
+end
+
+
+bind("n", "<leader>pv", vim.cmd.Ex)
+
+-- navigate tabs
+bind("n", "<C-Left>", vim.cmd.tabprevious)
+bind("n", "<C-Right>", vim.cmd.tabnext)
 
 -- move selected line up or down
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+bind("v", "J", ":m '>+1<CR>gv=gv")
+bind("v", "K", ":m '<-2<CR>gv=gv")
 
 -- keep mouse pos while moving
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+bind("n", "J", "mzJ`z")
+bind("n", "<C-d>", "<C-d>zz")
+bind("n", "<C-u>", "<C-u>zz")
+bind("n", "n", "nzzzv")
+bind("n", "N", "Nzzzv")
 
 -- paste over selected text
-vim.keymap.set("x", "<leader>p", [["_dP]])
+bind("x", "<leader>p", [["_dP]])
 
 -- copy into sys register nad paste from
-vim.keymap.set("v", "<leader>y", [["_y]])
-vim.keymap.set({ "n", "v" }, "<leader>Y", [["_Y]])
-vim.keymap.set("i", "<C-v>", [[<Esc>"+pi]])
-vim.keymap.set("n", "<C-v>", [["+p]])
+bind("v", "<leader>y", [["_y]])
+bind({ "n", "v" }, "<leader>Y", [["_Y]])
+bind("i", "<C-v>", [[<Esc>"+pli]])
+bind("n", "<C-v>", [["+p]])
 
 -- actually delete text
-vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
+bind({ "n", "v" }, "<leader>d", [["_d]])
 
 -- exit terminal w <Esc>
-vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]])
+bind("t", "<Esc>", [[<C-\><C-n>]])
 
 -- quick format
 local wfmt = function()
-	vim.cmd.wa()
-	vim.lsp.buf.format()
+    vim.cmd("silent! wa!")
+    vim.lsp.buf.format()
 end
-vim.keymap.set("n", "<leader><leader>", wfmt)
+bind("n", "<leader><leader>", wfmt)
 
 -- quickfix binds
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+bind("n", "<C-k>", "<cmd>cnext<CR>zz")
+bind("n", "<C-j>", "<cmd>cprev<CR>zz")
+bind("n", "<leader>k", "<cmd>lnext<CR>zz")
+bind("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 -- search and replace for current word
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+bind("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- write to file and run file
 local runf = function(mode)
-	wfmt()
-	vim.cmd(get_run_command(mode))
+    wfmt()
+    vim.cmd(get_run_command(mode))
 end
 
-vim.keymap.set({ "n", "i", "v" }, "<F5>", function()
-	runf(0)
+bind({ "n", "i", "v" }, "<F5>", function()
+    runf(0)
 end)
-vim.keymap.set({ "n", "i", "v" }, "<F6>", function()
-	runf(1)
+bind({ "n", "i", "v" }, "<F6>", function()
+    runf(1)
 end)
 
--- adjust cursor movement on <Esc>
-vim.keymap.set("i", "<Esc>", "<Esc>l", { remap = false })
+-- easy quitting vim
+local function quit()
+    wfmt()
+    vim.cmd("SaveSession")
+    vim.cmd.qa()
+end
+bind("n", "<F4>", quit)
 
 -- set cwd to that of the current file
-vim.keymap.set("n", "<leader>cd", "<cmd>cd %:p:h<CR>")
+bind("n", "<leader>cd", "<cmd>cd %:p:h<CR>")
 
 -- open nvim configs
 local config, code
 if vim.fn.has("macunix") == 1 then
-	config = "~/.config/nvim/"
-	code = "~/Documents/GitHub/"
+    config = "~/.config/nvim/"
+    code = "~/Documents/GitHub/"
 else
-	config = "~/AppData/Local/nvim/"
-	code = "~/Desktop/code"
+    config = "~/AppData/Local/nvim/"
+    code = "~/Desktop/code"
 end
 
-vim.keymap.set("n", "<leader>vpp", "<cmd>e " .. config .. "<CR>")
-vim.keymap.set("n", "<leader>vpc", "<cmd>e " .. code .. "<CR>")
+bind("n", "<leader>vpp", "<cmd>e " .. config .. "<CR>")
+bind("n", "<leader>vpc", "<cmd>e " .. code .. "<CR>")
+
+-- open file/folder in explorer
+local open_command
+if vim.fn.has("macunix") == 0 then
+    open_command = "!explorer "
+end
+bind("n", "<leader>exp", "<cmd>silent " .. open_command .. "%:h<CR>")

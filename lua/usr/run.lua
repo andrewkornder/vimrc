@@ -1,25 +1,30 @@
 LANGS = {
-    ["python"] = { ext = "py", cmd = "!python311 %" },
-    ["lua"] = { ext = "lua", cmd = "!lua %" },
-    ["text"] = { ext = "txt", cmd = "!notepad %:h" }
+    ["py"] = { cmd = "!python311 %:p" },
+    ["java"] = { cmd = "!javac *.java -classpath %:h && java %:r && del *.class" },
+    ["lua"] = { cmd = "!lua %:p" },
+    ["txt"] = { cmd = "!notepad %:p" }
 }
 
 
 if vim.fn.has("macunix") == 1 then
-    LANGS.python.cmd = "!python3 %"
+    LANGS.python.cmd = "!python3 %:p"
 end
 
 
 function get_run_command(mode)
-    f_ext = vim.fn.expand("%:e")
-    for name, info in pairs(LANGS) do
-        if f_ext == info.ext then
-            print(string.format("found a %s file", name))
-            if mode == 1 then
-                return "Bufferize " .. info.cmd:gsub("%%", vim.fn.expand("%"))
-            end
-            return info.cmd
-        end
+    local f_ext = vim.fn.expand("%:e")
+    local info = LANGS[f_ext]
+    if info == nil then
+        return "echo \"language is not configured\""
     end
-    return "echo \"failed to find a known file format\""
+
+    local cmd = info.cmd
+    if cmd ~= nil then
+        if mode == 1 then
+            cmd = "Bufferize " .. cmd
+        end
+        return cmd
+    end
+
+    return "echo \"no command configured\""
 end
