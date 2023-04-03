@@ -56,4 +56,5 @@ vim.keymap.set({ "n", "v" }, "<leader>ccb", function() CycleColors(-1) end)
 vim.keymap.set({ "n", "v" }, "<leader>cr", function()
     vim.cmd.colorscheme(color_priority[1])
 end)
-vim.api.nvim_create_user_command("CycleColors", [[lua require("after.plugin.colors").CycleColors(1)]], {})
+
+vim.api.nvim_create_user_command("CycleColor", function() CycleColors(1) end, {})

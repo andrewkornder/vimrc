@@ -57,19 +57,6 @@ bind("n", "<leader>j", "<cmd>lprev<CR>zz")
 -- search and replace for current word
 bind("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
--- write to file and run file
-local runf = function(mode)
-    wfmt()
-    vim.cmd(get_run_command(mode))
-end
-
-bind({ "n", "i", "v" }, "<F5>", function()
-    runf(0)
-end)
-bind({ "n", "i", "v" }, "<F6>", function()
-    runf(1)
-end)
-
 -- easy quitting vim
 local function quit()
     wfmt()
@@ -82,12 +69,11 @@ bind("n", "<F4>", quit)
 bind("n", "<leader>cd", "<cmd>cd %:p:h<CR>")
 
 -- open nvim configs
-local config, code
+local code
+local config = vim.fn.stdpath("config")
 if vim.fn.has("macunix") == 1 then
-    config = "~/.config/nvim/"
     code = "~/Documents/GitHub/"
 else
-    config = "~/AppData/Local/nvim/"
     code = "~/Desktop/code"
 end
 
