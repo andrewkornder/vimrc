@@ -14,6 +14,10 @@ local function JavaArg()
     vim.cmd("!javac " .. folder .. "\\*.java -d " .. folder)
 
     local class = vim.fn.input("File? ")
+    if class == "" then
+        print("empty input")
+        return
+    end
     vim.cmd("!java -cp " .. folder .. " " .. class)
     vim.cmd("!del " .. folder .. "\\*.class")
 end
@@ -28,6 +32,8 @@ end
 
 local function Lua()
     local config = vim.fn.stdpath("config")
+    local folder = vim.fn.expand("%:p:h")
+    print(config, folder)
     if string.match(folder, config) then
         vim.cmd.so()
         print(1)
