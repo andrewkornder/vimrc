@@ -82,7 +82,10 @@ bind("n", "<leader>vpc", "<cmd>e " .. code .. "<CR>")
 
 -- open file/folder in explorer
 local open_command
-if vim.fn.has("macunix") == 0 then
-    open_command = "!explorer "
+if vim.fn.has("macunix") == 1 then
+    open_command = "open"
+else 
+    open_command = "start"
 end
-bind("n", "<leader>exp", "<cmd>silent " .. open_command .. "%:h<CR>")
+
+bind("n", "<leader>exp", "<cmd>silent !" .. open_command .. " %:h<CR>")

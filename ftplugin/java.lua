@@ -1,6 +1,17 @@
 -- help: (https://github.com/mfussenegger/nvim-jdtls#configuration-verbose)
 
-local data_dir = "C:/Users/usr/AppData/Local/nvim" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+local data_dir, jar, config
+if vim.fn.has(macunix) == 0 then
+    data_dir = "C:/Users/usr/AppData/Local/nvim" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+    jar = "C:/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar"
+    config = "C:/jdtls/config_win"
+else
+    data_dir = "~/.config/nvim/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+    jar = "~/.config/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar"
+    config = "~/.config/jdtls/config_mac/"
+end
+
+
 local config = {
     cmd = {
         "java",
@@ -13,8 +24,8 @@ local config = {
         "--add-modules=ALL-SYSTEM",
         "--add-opens", "java.base/java.util=ALL-UNNAMED",
         "--add-opens", "java.base/java.lang=ALL-UNNAMED",
-        "-jar", "C:/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
-        "-configuration", "C:/jdtls/config_win",
+        "-jar", jar,
+        "-configuration", config,
         "-data", data_dir,
     },
     root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1]),--"C:/Users/usr/Desktop/code/java",

@@ -1,15 +1,33 @@
 local is_mac = vim.fn.has("macunix")
 
 local function Java()
-    local folder = vim.fn.expand("%:p:h")
+    local s
+    if vim.fn.has("macunix") == 1 then 
+        s = '/' 
+    else
+        s = '\\'
+    end
 
-    vim.cmd("!javac " .. folder .. "\\*.java -d " .. folder)
+    local folder = vim.fn.expand("%:h") .. s
+
+    vim.cmd("!javac " .. folder .. s .."*.java -d " .. folder)
     vim.cmd("!java -cp " .. folder .. " %:t:r")
-    vim.cmd("!del " .. folder .. "\\*.class")
+    if vim.fn.has("macunix") == 0 then
+        vim.cmd("!del " .. folder .. s .."*.class")
+    else
+        vim.cmd("!rm "..folder..s.."*.class")
+    end
 end
 
 local function JavaArg()
-    local folder = vim.fn.expand("%:p:h")
+    local s
+    if vim.fn.has("macunix") == 1 then 
+        s = '/' 
+    else 
+        s = '\\' 
+    end
+
+    local folder = vim.fn.expand("%:h") .. s
 
     vim.cmd("!javac " .. folder .. "\\*.java -d " .. folder)
 
@@ -19,7 +37,11 @@ local function JavaArg()
         return
     end
     vim.cmd("!java -cp " .. folder .. " " .. class)
-    vim.cmd("!del " .. folder .. "\\*.class")
+    if vim.fn.has("macunix") == 0 then
+        vim.cmd("!del " .. folder .. "\\*.class")
+    else
+        vim.cmd("!rm "..folder.."/*.class")
+    end
 end
 
 local function Python()
@@ -36,7 +58,6 @@ local function Lua()
     print(config, folder)
     if string.match(folder, config) then
         vim.cmd.so()
-        print(1)
     else
         vim.cmd("!lua %")
     end
