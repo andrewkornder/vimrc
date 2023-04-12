@@ -29,7 +29,7 @@ local function JavaArg()
 
     local folder = vim.fn.expand("%:h") .. s
 
-    vim.cmd("!javac " .. folder .. "\\*.java -d " .. folder)
+    vim.cmd("!javac " .. folder .. s .. "*.java -d " .. folder)
 
     local class = vim.fn.input("File? ")
     if class == "" then
