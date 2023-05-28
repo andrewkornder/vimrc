@@ -2,29 +2,29 @@ local is_mac = vim.fn.has("macunix")
 
 local function Java()
     local s
-    if vim.fn.has("macunix") == 1 then 
-        s = '/' 
+    if vim.fn.has("macunix") == 1 then
+        s = '/'
     else
         s = '\\'
     end
 
     local folder = vim.fn.expand("%:h") .. s
 
-    vim.cmd("!javac " .. folder .. s .."*.java -d " .. folder)
+    vim.cmd("!javac " .. folder .. s .. "*.java -d " .. folder)
     vim.cmd("!java -cp " .. folder .. " %:t:r")
     if vim.fn.has("macunix") == 0 then
-        vim.cmd("!del " .. folder .. s .."*.class")
+        vim.cmd("!del " .. folder .. s .. "*.class")
     else
-        vim.cmd("!rm "..folder..s.."*.class")
+        vim.cmd("!rm " .. folder .. s .. "*.class")
     end
 end
 
 local function JavaArg()
     local s
-    if vim.fn.has("macunix") == 1 then 
-        s = '/' 
-    else 
-        s = '\\' 
+    if vim.fn.has("macunix") == 1 then
+        s = '/'
+    else
+        s = '\\'
     end
 
     local folder = vim.fn.expand("%:h") .. s
@@ -40,7 +40,7 @@ local function JavaArg()
     if vim.fn.has("macunix") == 0 then
         vim.cmd("!del " .. folder .. "\\*.class")
     else
-        vim.cmd("!rm "..folder.."/*.class")
+        vim.cmd("!rm " .. folder .. "/*.class")
     end
 end
 
@@ -50,6 +50,16 @@ local function Python()
         runner = "python3"
     end
     vim.cmd("!" .. runner .. " %:p")
+end
+
+local function PythonArg()
+    local runner = "python311"
+    if is_mac == 1 then
+        runner = "python3"
+    end
+
+    local file = vim.fn.input("File? ")
+    vim.cmd("!" .. runner .. " %:p:h\\" .. file)
 end
 
 local function Lua()
@@ -87,6 +97,8 @@ function RunWithArgs()
 
     if filetype == "java" then
         JavaArg()
+    elseif filetype == "py" then
+        PythonArg()
     else
         _rdefault()
     end

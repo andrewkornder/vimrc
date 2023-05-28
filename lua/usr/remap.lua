@@ -35,7 +35,10 @@ bind({ "n", "v" }, "<leader>Y", [["_Y]])
 bind("i", "<C-v>", [[<Esc>"+pli]])
 bind("n", "<C-v>", [["+p]])
 
--- actually delete text
+-- copy all of file
+bind({ "n", "v", "i" }, "<C-a>", [[ggVG]])
+
+-- actually delete text w/o copying
 bind({ "n", "v" }, "<leader>d", [["_d]])
 
 -- exit terminal w <Esc>
@@ -84,7 +87,7 @@ bind("n", "<leader>vpc", "<cmd>e " .. code .. "<CR>")
 local open_command
 if vim.fn.has("macunix") == 1 then
     open_command = "open"
-else 
+else
     open_command = "start"
 end
 
