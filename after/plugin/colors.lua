@@ -1,7 +1,8 @@
 vim.opt.background = "dark"
 
 local overrideColors = {
-    bg = { "#16161D", "234" }, --eigengrau
+    --bg = { "#16161D", "234" }, --eigengrau
+    bg = { "#161820", "234" },
     stsln = { "#1b1e26", "235" },
 }
 
