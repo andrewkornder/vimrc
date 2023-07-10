@@ -1,64 +1,59 @@
-require("usr.run")
-
 vim.g.mapleader = " "
-
-
-local function bind(modes, keymap, command, args)
-    args = {} or args
-    vim.keymap.set(modes, keymap, command, args)
+local function set(modes, keymap, command, args)
+    vim.keymap.set(modes, keymap, command, args or {})
 end
 
 
-bind("n", "<leader>pv", vim.cmd.Ex)
+set("n", "<leader>pv", vim.cmd.Ex)
 
 -- navigate tabs
-bind("n", "<C-Left>", vim.cmd.tabprevious)
-bind("n", "<C-Right>", vim.cmd.tabnext)
+set("n", "<C-Left>", vim.cmd.tabprevious)
+set("n", "<C-Right>", vim.cmd.tabnext)
 
 -- move selected line up or down
-bind("v", "J", ":m '>+1<CR>gv=gv")
-bind("v", "K", ":m '<-2<CR>gv=gv")
+set("v", "J", ":m '>+1<CR>gv=gv")
+set("v", "K", ":m '<-2<CR>gv=gv")
 
 -- keep mouse pos while moving
-bind("n", "J", "mzJ`z")
-bind("n", "<C-d>", "<C-d>zz")
-bind("n", "<C-u>", "<C-u>zz")
-bind("n", "n", "nzzzv")
-bind("n", "N", "Nzzzv")
+set("n", "J", "mzJ`z")
+set("n", "<C-d>", "<C-d>zz")
+set("n", "<C-u>", "<C-u>zz")
+set("n", "n", "nzzzv")
+set("n", "N", "Nzzzv")
 
 -- paste over selected text
-bind("x", "<leader>p", [["_dP]])
+set("x", "<leader>p", [["_dP]])
 
 -- copy into sys register nad paste from
-bind("v", "<leader>y", [["_y]])
-bind({ "n", "v" }, "<leader>Y", [["_Y]])
-bind("i", "<C-v>", [[<Esc>"+pli]])
-bind("n", "<C-v>", [["+p]])
+set("v", "<leader>y", [["_y]])
+set({ "n", "v" }, "<leader>Y", [["_Y]])
+set("i", "<C-v>", [[<Esc>"+pli]])
+set("n", "<C-v>", [["+p]])
 
 -- copy all of file
-bind({ "n", "v", "i" }, "<C-a>", [[ggVG]])
+set({ "n", "v", "i" }, "<C-a>", [[ggVG]])
 
 -- actually delete text w/o copying
-bind({ "n", "v" }, "<leader>d", [["_d]])
+set({ "n", "v" }, "<leader>d", [["_d]])
 
 -- exit terminal w <Esc>
-bind("t", "<Esc>", [[<C-\><C-n>]])
+set("t", "<Esc>", [[<C-\><C-n>]])
 
 -- quick format
 local wfmt = function()
     vim.cmd("silent! wa!")
     vim.lsp.buf.format()
 end
-bind("n", "<leader><leader>", wfmt)
+set("n", "<leader><leader>", wfmt)
 
 -- quickfix binds
-bind("n", "<C-k>", "<cmd>cnext<CR>zz")
-bind("n", "<C-j>", "<cmd>cprev<CR>zz")
-bind("n", "<leader>k", "<cmd>lnext<CR>zz")
-bind("n", "<leader>j", "<cmd>lprev<CR>zz")
+set("n", "<C-k>", "<cmd>cnext<CR>zz")
+set("n", "<C-j>", "<cmd>cprev<CR>zz")
+set("n", "<leader>k", "<cmd>lnext<CR>zz")
+set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 -- search and replace for current word
-bind("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- easy quitting vim
 local function quit()
@@ -66,29 +61,24 @@ local function quit()
     vim.cmd("SaveSession")
     vim.cmd.qa()
 end
-bind("n", "<F4>", quit)
+set("n", "<F4>", quit)
 
 -- set cwd to that of the current file
-bind("n", "<leader>cd", "<cmd>cd %:p:h<CR>")
+set("n", "<leader>cd", "<cmd>cd %:p:h<CR>")
 
 -- open nvim configs
-local code
 local config = vim.fn.stdpath("config")
-if vim.fn.has("macunix") == 1 then
-    code = "~/Documents/GitHub/"
-else
-    code = "~/Desktop/code"
-end
 
-bind("n", "<leader>vpp", "<cmd>e " .. config .. "<CR>")
-bind("n", "<leader>vpc", "<cmd>e " .. code .. "<CR>")
+set("n", "<leader>vp", "<cmd>e " .. config .. "<CR>")
+set("n", "<leader>vc", "<cmd>e " .. vim.g.user.code .. "<CR>")
+set("n", "<leader>vf", "<cmd>e " .. vim.g.user.folders .. "<CR>")
 
 -- open file/folder in explorer
 local open_command
-if vim.fn.has("macunix") == 1 then
+if vim.g.user.os == "mac" then
     open_command = "open"
 else
     open_command = "start"
 end
 
-bind("n", "<leader>exp", "<cmd>silent !" .. open_command .. " %:h<CR>")
+set("n", "op", "<cmd>silent !" .. open_command .. " %:h<CR>")

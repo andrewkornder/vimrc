@@ -1,17 +1,12 @@
 -- help: (https://github.com/mfussenegger/nvim-jdtls#configuration-verbose)
 --
 
-local data_dir, jar, config_dir
-if vim.fn.has('macunix') == 0 then
-    data_dir = "C:/Users/usr/AppData/Local/nvim" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
-    jar = "C:/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar"
-    config_dir = "C:/jdtls/config_win"
-else
-    data_dir = "~/.config_dir/nvim/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
-    jar = '/Users/akornder25/.config_dir/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar'
-    config_dir = "~/.config_dir/jdtls/config_mac/"
-end
+local jdtls = vim.g.user.path_to_vim .. "/jdtls"
 
+local jar = jdtls .. "/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar"
+local config_dir = jdtls .. "/config_" .. vim.g.user.os
+
+local data_dir = vim.fn.stdpath("data") .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 
 local config = {
     cmd = {
