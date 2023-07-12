@@ -43,16 +43,16 @@ local function JavaArg()
 end
 
 local function Python()
-    local runner = "python311"
-    if is_mac == 1 then
-        runner = "python3"
+    local runner = "python3"
+    if vim.g.user.os == "mac" then
+        runner = "python"
     end
     vim.cmd("!" .. runner .. " %:p")
 end
 
 local function PythonArg()
     local runner = "python311"
-    if is_mac == 1 then
+    if vim.g.user.os == "mac" then
         runner = "python3"
     end
 

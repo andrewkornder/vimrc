@@ -1,4 +1,4 @@
-local cmd = { 'D:/nvim_app/lua_ls/bin/lua-language-server.exe' }
+local cmd = { vim.g.user.nvim .. '/lua_ls/bin/lua-language-server.exe' }
 
 local config = {
     cmd = cmd,

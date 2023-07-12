@@ -78,7 +78,7 @@ local open_command
 if vim.g.user.os == "mac" then
     open_command = "open"
 else
-    open_command = "start"
+    open_command = "explorer"
 end
 
 set("n", "op", "<cmd>silent !" .. open_command .. " %:h<CR>")
